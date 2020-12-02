@@ -4,10 +4,19 @@
   "description": "Package for note taker app",
   "main": "server.js",
   "scripts": {
-    "test": "echo / Error: no test specified/ && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./index.js --exec babel-node -e js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rstout039/rstout039.github.io.git"
   },
   "author": "Ryan Stout",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rstout039/rstout039.github.io/issues"
+  },
+  "homepage": "https://github.com/rstout039/rstout039.github.io#readme",
   "dependencies": {
     "express": "^4.17.1",
     "mysql": "^2.18.1"
