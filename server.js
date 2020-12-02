@@ -1,20 +1,67 @@
-// Dependencies
 const express = require("express");
-const apiRoutes = require("./routes/apiRoutes.js");
-const htmlRoutes = require("./routes/htmlRoutes.js");
-
-// Create an express server
-const app = express();
-
-// Create a port
+const fs = require("fs");
+const path = require("path");
 const PORT = process.env.PORT || 3000;
-
-// Sets up the Express app to handle data parsing
+let app = express();
+let db = require("./db/db.json");
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static("public"));
-app.use("/api", apiRoutes);
-app.use("/", htmlRoutes);
+const dbNotes = JSON.parse(
+fs.readFileSync(path.join(__dirname, "/db/db.json"), (err, data) => {
+    if (err) throw err;
+})
+);
 
-app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
+const dbUpdate = dbNotes => {
+fs.writeFileSync(
+    path.join(__dirname, "/db/db.json"),
+    JSON.stringify(dbNotes),
+    err => {
+    if (err) throw err;
+    }
+);
+};
+
+// these first app.get requests are for the html pages
+app.get("/assets/css/styles.css", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/assets/css/styles.css"));
+});
+
+app.get("/assets/js/index.js", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/assets/js/index.js"));
+});
+
+app.get("/", function(req, res) {
+res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
+app.get("/notes", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/notes.html"));
+});
+
+app.get("/api/notes", function(req, res) {
+return res.json(dbNotes);
+});
+// these requests are for posting and deleting the notes
+app.post("/api/notes", function(req, res) {
+let newNote = req.body;
+let id = dbNotes.length;
+newNote.id = id + 1;
+dbNotes.push(newNote);
+dbUpdate(dbNotes);
+return res.json(dbNotes);
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+let id = req.params.id;
+let x = 1;
+delete dbNotes[id - 1];
+dbUpdate(dbNotes);
+res.send(dbNotes);
+});
+// listener!
+app.listen(PORT, function() {
+console.log("http://localhost:" + PORT);
+});
