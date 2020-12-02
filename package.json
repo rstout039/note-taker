@@ -5,20 +5,21 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js --exec babel-node -e js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rstout039/rstout039.github.io.git"
+    "url": "git+https://github.com/rstout039/note-taker.git"
   },
   "author": "Ryan Stout",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rstout039/rstout039.github.io/issues"
+    "url": "https://github.com/rstout039/note-taker/issues"
   },
-  "homepage": "https://github.com/rstout039/rstout039.github.io#readme",
+  "homepage": "https://github.com/rstout039/note-taker#readme",
   "dependencies": {
+    "db": "^3.3.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "fs": "0.0.1-security"
   }
 }
